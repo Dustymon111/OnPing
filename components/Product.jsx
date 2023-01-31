@@ -4,14 +4,12 @@ import Link from 'next/link';
 export default function Product({data}){
     return (
         <div className='cursor-pointer hover:shadow-2xl hover:scale-110 transition duration-300 text-center p-5 bg-red-600 rounded-lg'>
-            <Link href={'/products/'+data.id}>
-                <div>
-                    <Image src={data.image} width={150} height={150}/>
+            <Link href={'/products/'+data._id}>
+                <div className='flex-1 justify-between'>
+                    <Image loader={() => data.image_url} src={data.image_url} width={150} height={150} alt={data.name}/>
                     <div>
-                        <p className=''>{data.name}</p>
-                    </div>
-                    <div>
-                        <p className='text-sm text-white'>Rp.{data.price.toLocaleString('en-US')},-</p>
+                        <p className='break-words truncate font-semibold'>{data.name}</p>
+                        <p className='text-sm text-white font-semibold'>Rp.{data.price.toLocaleString('en-US')},-</p>
                     </div>
                 </div>
             </Link>

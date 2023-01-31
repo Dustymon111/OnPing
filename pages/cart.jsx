@@ -78,7 +78,7 @@ export default function Cart(){
 
     const checkChecked = () => { // jika ada 1 saja item yang ter-cek, maka tombol hapus dan beli akan enabled
         let flag = false
-        cart.map(shop => {
+        cart?.map(shop => {
             if (shop.is_selected){
                 flag = true
             }
@@ -97,7 +97,7 @@ export default function Cart(){
 
     const checkCheckedAll = () => { // jika ada 1 saja item yang tidak ter-cek, maka checkbox pilih semua akan uncheck
         let allChecked = true
-        for (let i = 0; i < cart.length; i++){
+        for (let i = 0; i < cart?.length; i++){
             if (!cart[i].is_selected){
                 allChecked = false
                 break
@@ -212,9 +212,7 @@ export default function Cart(){
 
     return (
         <Fragment>
-        <header className='w-full shadow-md py-6 bg-red-600 sticky top-0 z-40'>
-            <h1 className='text-4xl font-bold text-center text-white'>Kart</h1>
-        </header>
+        <Header/>
         <div className='bg-white sticky top-20 w-full z-30 border-b-4 px-5 flex justify-between'>
             <h1 className="text-2xl font-semibold py-5 sticky">Keranjang</h1>
             <button className='disabled:opacity-60' disabled={!checkChecked()} onClick={() => {
@@ -226,15 +224,15 @@ export default function Cart(){
         <div className="px-6">
             <div className={"py-10"}>
                 {loading? <h1>Loading....</h1> : 
-                cart.length === 0 ? (
+                cart?.length === 0 ? (
                 <div className='text-center'>
                     <h1>Keranjang kosong!</h1>
                     <button className='mt-5 py-2 px-4 bg-red-600 text-white rounded-full' onClick={() => loadAll()}>Mari Belanja</button>
                 </div>
                 ) : (
                 <>
-                <h1 className='font-semibold text-red-600 text-xl'><input className='mx-3' checked={checkCheckedAll()} type={"checkbox"} onChange={() => checkAll()}></input>Pilih Semua</h1>
-                {cart.map((shop) => (         
+                {/* <h1 className='font-semibold text-red-600 text-xl'><input className='mx-3' checked={checkCheckedAll()} type={"checkbox"} onChange={() => checkAll()}></input>Pilih Semua</h1> */}
+                {cart?.map((shop) => (         
                     <div key={shop.id}>
                         <h2 className='font-semibold py-5 text-xl'>
                             <input className='h-4 w-4 mx-3 cursor-pointer' type={"checkbox"} checked={shop.is_selected} onChange={() => handleChecked("cart", shop)}/>

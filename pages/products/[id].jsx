@@ -1,9 +1,8 @@
 import Layout from '../../Layout/Layout'
 import { Fragment, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import products from "../../public/products"
+// import products from "../../public/products"
 import { IoPencilSharp } from "react-icons/io5"
-import { FiPlusSquare, FiMinusSquare } from 'react-icons/fi'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FaMinus, FaPlus } from 'react-icons/fa'
@@ -14,26 +13,51 @@ export default function Detail() {
     let [quantity,setQuantity] = useState(1)
     const { id } = router.query
     
+    const getProduct = async () => {
+        const prd = await fetch(`http://localhost:8080/Products/${id}`)
+        const res = await prd.json()
+        setProduct(res)
+    }
+
     useEffect(()=>{
-        setProduct(products.find(p=>p.id==id))
+        getProduct()
     },[id])
 
-    function handleCart(){
+
+    const saveToCart = async (item) => {
+        const req_method = {
+            method: "POST",
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: {
+                product: item._id,
+                qty: quantity
+            }
+        };
+        try{
+            const postData = await fetch('http://localhost:8080/cart', req_method);
+            const res = await postData.json()
+            return res;
+        }catch(err){
+            return err
+        }
+    }
+
+    function handleCart(item){
 
         let conf = confirm("Apakah Anda Yakin ?")
 
         if(conf){
-
-            if(dispatch(addToCart({...product,new_quantity:quantity}))){
-                alert("Produk Berhasil Masuk ke dalam keranjang")
-            }
+            saveToCart(item)
         }
     }
 
     return (
         product ? 
         <Fragment>
-            <Layout title={product.name}>
+            <Layout key={product._id} title={product.name}>
                 <div className='w-full'>
                     <div className='mt-10 mx-72'>
                         <div className='flex gap-4 my-5'>
@@ -45,11 +69,11 @@ export default function Detail() {
                         </div>
                         <div className="grid grid-cols-12 gap-12">
                             <div className='col-span-3'>
-                                <Image src={product.image} width={1000} height={1000}/>
+                                <Image loader={()=> product.image_url} src={product.image_url} width={1000} height={1000} alt={product.name}/>
                             </div>
                             <div className='col-span-5'>
                                 <h2 className='text-xl'>{product.name}</h2>
-                                <h1 className='text-2xl font-bold my-3'>Rp. {product.price.toLocaleString('en-US')},-</h1>
+                                <h1 className='text-2xl font-bold my-3'>Rp.{product.price?.toLocaleString()},-</h1>
                                 <div className='mt-10'>
                                     <h4 className='text-lg mb-5'>Deskripsi</h4>
                                     <p className='text-sm'>{product.description}</p>
@@ -61,7 +85,7 @@ export default function Detail() {
                                 </div>
                                 <div className='border-2 border-red-600 mt-5 p-5 rounded-xl'>
                                     <p className='font-bold'>Pilih Varian</p>
-                                    <Image src={product.image} width={100} height={100} />
+                                    <Image loader={()=> product.image_url} src={product.image_url} width={100} height={100} alt={product.name}/>
                                     <div className = 'border-t-2 border-t-slate-400 '>
                                         <p className='text-sm my-2'>Jumlah Barang & Catatan</p>
                                         <div className="flex items-center justify-center gap-4 my-3">
@@ -75,10 +99,10 @@ export default function Detail() {
                                         </div>
                                         <div className='mt-5 flex items-center justify-between'>
                                             <p className='text-sm font-semibold text-gray-400'>Total Belanja :</p>
-                                            <h1 className='text-lg font-bold ml-6'>Rp. {product.price.toLocaleString('en-US')},-</h1>
+                                            <h1 className='text-lg font-bold ml-6'>Rp. {product.price},-</h1>
                                         </div>
                                         <div className='grid gap-2 m-auto font-bold my-5'>
-                                            <button className='text-white bg-red-600 p-3 rounded-xl' onClick={handleCart}>+ Masuk Troli</button>
+                                            <button className='text-white bg-red-600 p-3 rounded-xl' onClick={handleCart(product)}>+ Masuk Troli</button>
                                             <button className='border border-red-600 p-3 rounded-xl text-red-600'>Langsung Beli</button>
                                         </div>
                                     </div>

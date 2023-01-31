@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Link from 'next/link'
-import Head from 'next/head';
+import Head from "next/head";
 import Image from 'next/image'
 import mikro from '../public/UAS-Assets/mikro.png'
 
@@ -9,7 +9,6 @@ export default function Log( {children, type }){
     return (
         <Fragment>
             <Head>
-                <link href="https://fonts.googleapis.com/css2?family=Girassol&display=swap" rel="stylesheet" />
                 <title>{type}</title>
             </Head>
             <header className="w-full flex text-red-600">
