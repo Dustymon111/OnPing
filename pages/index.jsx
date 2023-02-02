@@ -4,8 +4,6 @@ import Image from 'next/image'
 import ListProduct from '../components/ListProduct'
 import 'react-slideshow-image/dist/styles.css';
 import { Slide } from 'react-slideshow-image';
-import jwtDecode from 'jwt-decode';
-import {getCookie} from 'cookies-next'
 
 export default function Home() {
 

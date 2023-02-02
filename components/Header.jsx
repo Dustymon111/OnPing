@@ -8,10 +8,20 @@ import jwtDecode from 'jwt-decode';
 
 export default function Header({title}){
     const [isHovering, setHovering] = useState(false);
+    const [keranjang, setKeranjang] = useState([])
 
-    
+    const getCart = async () => {
+        await fetch('http://localhost:8080/cart')
+        .then(response => response.json())
+        .then((data) => {
+            setKeranjang(data.cart)
+        })
+
+    }
+
     const [token, setToken] = useState()
     useEffect(() => {
+        getCart()
         if (getCookie('x-access-token') !== undefined){
             setToken(getCookie('x-access-token'))
         }
@@ -57,20 +67,24 @@ export default function Header({title}){
                             <span className='absolute ml-[-40px] mt-2 text-slate-500'>< GoSearch size={24} /></span>
                         </form>
                         <div className='flex mt-5 gap-[70px] ml-10'>
+                        {token !== undefined?
+                        <>
                             <Link href="/cart">
-                                <span className='cursor-pointer relative'>
+                                <span className='cursor-pointer relative'> 
                                     <FaShoppingCart size={30} />
-                                    {/* {
-                                        cart.length ? <span class="absolute -top-1 -right-2 bg-green-500 text-white font-semibold text-xs px-2 py-0.5 rounded-full">{cart.length}</span> : ''
-                                    } */}
+                                    {
+                                        keranjang.length !== 0 ? <span class="absolute -top-1 -right-2 bg-green-500 text-white font-semibold text-xs px-2 py-0.5 rounded-full">{keranjang.length}</span> : ''
+                                    }
                                 </span>
                             </Link>  
                             <FaBell size={30} />
                             <Link href='/history'><span className='cursor-pointer'><FaHistory size={30} /></span></Link>
                             <FaEnvelope size={30} />
+                            </>
+                            : ""   }
                             <span className='flex gap-[10px] cursor-pointer' onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
                                 <FaUserCircle size={30} />
-                                <p className='font-semibold'>{token === undefined? "User": getUsername()}</p>
+                                <p className='font-semibold'>{token === undefined? <Link href='/login'>Sign in</Link>: getUsername()}</p>
                                 {/* Log Out */}
                                 {isHovering? 
                                     token !== undefined?
@@ -85,11 +99,7 @@ export default function Header({title}){
                                 </div> 
                                 </>
                                 : 
-                                <div className='w-75 absolute mt-10 bg-white p-5 text-red-600 font-semibold drop-shadow-lg rounded-xl border-2 border-red-600 z-40'>
-                                    <div className='hover:scale-125 hover:bg-red-600 p-2 rounded hover:text-white'>
-                                        <Link href='/login'>Sign in</Link>
-                                    </div>
-                                </div> 
+                                    ""
                                 : ''}   
                             </span>     
                         </div>

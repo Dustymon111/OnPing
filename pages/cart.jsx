@@ -3,7 +3,7 @@ import Layout from '../Layout/Layout'
 import Link from "next/link";
 import { FaMinus, FaPlus, FaTimes, FaTrash } from "react-icons/fa";
 
-export default function Cart(){
+export default function Cart(){ 
     // const cart = useSelector((state) => state.cart);
     // const dispatch = useDispatch();
     
