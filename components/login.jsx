@@ -4,23 +4,43 @@ import Playstore from "../public/SVG/Playstore.svg";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter} from 'next/router'
+import {setCookie} from 'cookies-next'
 
 export default function Login() {
 
     const router = useRouter();
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
-    let [chk, setChk] = useState(false)
 
-    const id = "user";
-    const pw = "user";
-
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault();
+
+        try{
+            const signIn = await fetch('http://localhost:8080/api/auth/signin', {
+                method: "POST",
+                headers:{
+                    Accept: 'application/json',
+                    'Content-Type': "application/json"
+                },
+                body: JSON.stringify({
+                    username: user,
+                    password: pass
+                })
+            })
+            const res = await signIn.json()
+            if (signIn.status === 200){
+                setCookie('x-access-token', res.accessToken)
+                router.push('/')
+            }else{
+                alert('Login gagal! Mohon cek username dan password')
+            }
+        }catch(err){
+            console.log(err);
+        }
     }
 
   return (
-    <div className="card mt-20 ml-20 border border-2 rounded-lg bg-white text-black block h-[420px]">
+    <div className="card mt-20 ml-20 border border-2 rounded-lg bg-white text-black block w-[530px] h-[440px]">
         <div className="p-10 px-12">
             <h1 className="text-[30px] font-semibold text-red-600">Log in</h1>
             <form className="grid grid-rows-2" onSubmit={handleSubmit}>
@@ -30,11 +50,7 @@ export default function Login() {
                 <div className="py-4">
                     <input type="password" value={pass} onInput={e => setPass(e.target.value)} placeholder="Password" name="pass" className="border border-3 rounded-lg p-3 w-[450px]" required/>
                 </div>
-                <button className="bg-red-600 p-2 rounded-lg text-white font-bold mt-5" onClick={() => {
-                    if (user === id && pass === pw)
-                        setChk(chk = true)
-                    chk? router.push('/'): alert('Username/Password salah!  Username : user, Password : user')
-                }}>Login</button>
+                <button className="bg-red-600 p-2 rounded-lg text-white font-bold mt-5" onClick={handleSubmit}>Login</button>
             </form>
             <p className="text-sm text-blue-700 text-center mt-12">Lupa Password?</p>
         </div>

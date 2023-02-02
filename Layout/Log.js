@@ -17,14 +17,14 @@ export default function Log( {children, type }){
             </header>  
             <main className="bg-red-600 w-full flex text-white">
                 <div className="block mt-44 ">
-                    <h1 className="font-Girassol text-[100px] ml-80">ON P!NG</h1>
-                    <h2 className="text-5xl font-semibold ml-36">Platform Jual-Beli No.331 di Asia</h2>
-                    <div className="ml-96 mt-14 mb-12 w-[180px] font-semibold">
+                    <h1 className="font-Girassol text-[100px] ml-60">ON P!NG</h1>
+                    <h2 className="text-4xl font-semibold ml-32">Platform Jual-Beli No.331 di Asia</h2>
+                    <div className="ml-80 mt-14 mb-12 w-[180px] font-semibold">
                         <p>Dipersembahkan oleh :</p>
                         <p className="text-center">anonymous</p>
                         <p>dari Mikroskil University</p>
                     </div>
-                    <div className="ml-48 cursor-pointer">
+                    <div className="ml-24 cursor-pointer">
                         <Link href="https://www.mikroskil.ac.id"><Image src={mikro} width={600} height={230}/></Link>
                     </div>    
                 </div>

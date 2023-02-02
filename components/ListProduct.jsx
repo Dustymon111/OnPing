@@ -19,7 +19,7 @@ export default function ListProduct({cat}) {
     return (
         <div className='w-full'>
             <div className='my-10 mx-40'>
-                <h1 className='text-[20px] my-5 font-semibold border-b pb-5'>{cat.name}</h1>
+                <h1 className='text-[30px] my-5 font-semibold border-b pb-5'>{cat.name}</h1>
                 <div className='grid grid-cols-5 gap-8'>
                     {Products.map(product=>product.category == cat._id ? <Product key={product._id} data={product}/> : '')}
                 </div>

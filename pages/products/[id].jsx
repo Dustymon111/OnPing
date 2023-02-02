@@ -1,7 +1,6 @@
 import Layout from '../../Layout/Layout'
 import { Fragment, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-// import products from "../../public/products"
 import { IoPencilSharp } from "react-icons/io5"
 import Image from 'next/image'
 import Link from 'next/link'
@@ -31,10 +30,10 @@ export default function Detail() {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: {
+            body: JSON.stringify({
                 product: item._id,
                 qty: quantity
-            }
+            })
         };
         try{
             const postData = await fetch('http://localhost:8080/cart', req_method);
@@ -45,14 +44,9 @@ export default function Detail() {
         }
     }
 
-    function handleCart(item){
-
-        let conf = confirm("Apakah Anda Yakin ?")
-
-        if(conf){
-            saveToCart(item)
-        }
-    }
+    // function handleCart(item){
+    //     // confirm("Apakah Anda Yakin ?")
+    // }
 
     return (
         product ? 
@@ -69,7 +63,7 @@ export default function Detail() {
                         </div>
                         <div className="grid grid-cols-12 gap-12">
                             <div className='col-span-3'>
-                                <Image loader={()=> product.image_url} src={product.image_url} width={1000} height={1000} alt={product.name}/>
+                                <Image src={product.image_url} width={1000} height={1000} alt={product.name}/>
                             </div>
                             <div className='col-span-5'>
                                 <h2 className='text-xl'>{product.name}</h2>
@@ -85,7 +79,7 @@ export default function Detail() {
                                 </div>
                                 <div className='border-2 border-red-600 mt-5 p-5 rounded-xl'>
                                     <p className='font-bold'>Pilih Varian</p>
-                                    <Image loader={()=> product.image_url} src={product.image_url} width={100} height={100} alt={product.name}/>
+                                    <Image src={product.image_url} width={100} height={100} alt={product.name}/>
                                     <div className = 'border-t-2 border-t-slate-400 '>
                                         <p className='text-sm my-2'>Jumlah Barang & Catatan</p>
                                         <div className="flex items-center justify-center gap-4 my-3">
@@ -99,10 +93,15 @@ export default function Detail() {
                                         </div>
                                         <div className='mt-5 flex items-center justify-between'>
                                             <p className='text-sm font-semibold text-gray-400'>Total Belanja :</p>
-                                            <h1 className='text-lg font-bold ml-6'>Rp. {product.price},-</h1>
+                                            <h1 className='text-lg font-bold ml-6'>Rp. {product.price?.toLocaleString()},-</h1>
                                         </div>
                                         <div className='grid gap-2 m-auto font-bold my-5'>
-                                            <button className='text-white bg-red-600 p-3 rounded-xl' onClick={handleCart(product)}>+ Masuk Troli</button>
+                                            <button className='text-white bg-red-600 p-3 rounded-xl' onClick={() => {
+                                                let toCart = confirm('Apakah Anda Yakin?')
+                                                if (toCart){
+                                                    saveToCart(product)
+                                                }
+                                            }}>+ Masuk Troli</button>
                                             <button className='border border-red-600 p-3 rounded-xl text-red-600'>Langsung Beli</button>
                                         </div>
                                     </div>
