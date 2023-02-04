@@ -25,7 +25,7 @@ export default function Header({title}){
         if (getCookie('x-access-token') !== undefined){
             setToken(getCookie('x-access-token'))
         }
-    })
+    }, [])
 
     const getUsername = () => {
         return jwtDecode(token).username
@@ -73,7 +73,7 @@ export default function Header({title}){
                                 <span className='cursor-pointer relative'> 
                                     <FaShoppingCart size={30} />
                                     {
-                                        keranjang.length !== 0 ? <span class="absolute -top-1 -right-2 bg-green-500 text-white font-semibold text-xs px-2 py-0.5 rounded-full">{keranjang.length}</span> : ''
+                                        keranjang.length !== 0 ? <span className="absolute -top-1 -right-2 bg-green-500 text-white font-semibold text-xs px-2 py-0.5 rounded-full">{keranjang.length}</span> : ''
                                     }
                                 </span>
                             </Link>  

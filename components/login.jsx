@@ -29,10 +29,13 @@ export default function Login() {
             })
             const res = await signIn.json()
             if (signIn.status === 200){
+                console.log(res)
+                localStorage.setItem('token', res.accessToken)
                 setCookie('x-access-token', res.accessToken)
+                // setCookie('info', res)
                 router.push('/')
             }else{
-                alert('Login gagal! Mohon cek username dan password')
+                alert('Login gagal!\n\nDummy:\nUsername: user\nPassword: user\n\nJika ingin menggunakan akun sendiri, silahkan register terlebih dahulu')
             }
         }catch(err){
             console.log(err);
